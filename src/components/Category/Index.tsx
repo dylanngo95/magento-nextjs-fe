@@ -1,5 +1,8 @@
 const buildUrl = (item: any) => {
-    let url = `category/${item.url_path}.${item.id}`
+    let category = item?.name ?? ''
+    category = category.replace(/\s/g, '-')
+    category = category.replace(/\//gm, '-')
+    let url = `category/${category}.${item?.id}`
     return url;
 }
 
@@ -16,14 +19,17 @@ export default function Category(cateProps: any) {
                                 {
                                     item?.children.map((itemChild: any) =>
                                         <li key={itemChild?.id}>
-                                            <a href={buildUrl(item)}>{itemChild?.name}</a>
+                                            <a href={buildUrl(itemChild)}>{itemChild?.name}</a>
                                             <ul>
                                                 {
-                                                    itemChild?.children.map((itemChildTwo: any) =>
-                                                        <li key={itemChildTwo?.id}>
-                                                            <a href={buildUrl(item)}>{itemChildTwo?.name}</a>
-                                                        </li>
-                                                    )
+                                                    itemChild?.children.map((itemChildTwo: any) => {
+                                                        // console.log('itemChild', itemChildTwo)
+                                                        return (
+                                                            <li key={itemChildTwo?.id}>
+                                                                <a href={buildUrl(itemChildTwo)}>{itemChildTwo?.name}</a>
+                                                            </li>
+                                                        )
+                                                    })
                                                 }
                                             </ul>
                                         </li>

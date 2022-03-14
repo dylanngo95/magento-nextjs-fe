@@ -33,7 +33,7 @@ const QUERY = gql`
 
 export default function CategoryList() {
     const { data, loading } = useQuery(QUERY)
-    console.log('=====> Index data', data)
+    // console.log('=====> Index data', data)
 
     if (loading) return <p>Loading data!</p>
 
@@ -48,7 +48,7 @@ export default function CategoryList() {
 export async function getServerSideProps(context: GetStaticPropsContext) {
     const apolloClient = initializeApollo()
     
-    console.log('Category listing')
+    // console.log('Category listing')
     await apolloClient.query({
         query: QUERY
     })

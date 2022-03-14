@@ -36,13 +36,24 @@ export function initializeApollo(initState: NormalizedCacheObject | null = null)
         // Get existing cache, loaded during client side data fetching
         const existingCache = client.extract()
 
+        // console.log('=========existingCache ROOT_QUERY')
+        // console.log('existingCache', existingCache?.ROOT_QUERY)
+        // console.log('=========existingCache')
+
         // Merge the existing cache into data passed from getStaticProps/getServerSideProps
         const data = merge(initState, existingCache, {
-            arrayMerge: (destinationArr, sourceArr) => [
-                ...sourceArr,
-                ...destinationArr.filter((d) => sourceArr.every((s) => isEqual(d, s)))
-            ]
-        })
+            // combine arrays using object equality (like in sets)
+            arrayMerge: (destinationArray, sourceArray) => [
+            ...sourceArray,
+            ...destinationArray.filter((d) =>
+                sourceArray.every((s) => !isEqual(d, s))
+            ),
+            ],
+        });
+
+        // console.log('=========existingCache Root 2')
+        // console.log('existingCache data', data?.ROOT_QUERY)
+        // console.log('=========existingCache')
 
         // Restore the cache with the merged data
         client.cache.restore(data)
