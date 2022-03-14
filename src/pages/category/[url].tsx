@@ -2,29 +2,69 @@ import { gql, useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 
 const QUERY = gql`
-{
-    categories(pageSize: 10, currentPage: 1, filters: {parent_id: {eq: "2"}}) {
-      items {
-        name
-        level
-        url_path
+query($id: String) {
+  products(filter: {category_id: {eq: $id}}) {
+    items{
+      sku
+      uid
+      name
+      meta_title
+      image{
+        url
+        label
       }
-      total_count
+      description{
+        html
+      }
+      url_key
     }
   }
+}
 `
 
-export default function CategoryList() {
-    // const { data, loading } = useQuery(QUERY)
-    const { query } = useRouter()
-    const url = query?.url;
-    console.log(url);
+function getCategory(query: any) {
+  let category = query?.url ?? null;
+  if (category) {
+    category = {
+      id: category.split('.')[1],
+      url_path: category.split('.')[0]
+    }
+  }
+  return category
+}
 
-    // if (loading) return <p>Loading</p>
-    // console.log(data)
-    return (
-        <div>
-            <h2>{url}</h2>
-        </div>
-    )
+export default function CategoryList() {
+  const { query } = useRouter()
+  const category = getCategory(query)
+
+  console.log('URL', category)
+  const { data, loading } = useQuery(QUERY, {
+    variables: {
+      id: category.id
+    }
+  })
+
+  if (loading) return <p>Loading</p>
+
+  console.log('data', data)
+
+  return (
+    <div>
+      <h2>Product list</h2>
+      {
+        data?.products?.items.map((item: any) =>
+          <div key={item.sku}>
+            <p>{item.sku}</p>
+          </div>
+        )
+      }
+    </div>
+  )
+}
+
+export async function getServerSideProps(context: any) {
+  // console.log('Context', context)
+  return {
+    props: {}
+  }
 }

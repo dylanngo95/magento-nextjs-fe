@@ -4,15 +4,9 @@ import isEqual from 'lodash.isequal'
 import { useMemo } from "react";
 
 
-const cache = new InMemoryCache({
-    typePolicies: {
-        Query: {
-            keyFields: ["categories"]
-        }
-    }
-});
+const cache = new InMemoryCache();
 
-const uri = process.env.MAGENTO_GRAPHQL_PUBLIC_URL
+const uri = "https://pim.local/graphql"
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
