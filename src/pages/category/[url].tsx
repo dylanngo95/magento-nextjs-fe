@@ -77,10 +77,12 @@ export default function CategoryList() {
             <div key={item?.sku}>
               <a href={buildProductUrl(item)}><p>{item?.sku} - {item?.name}</p></a>
               <Image
-                  lazyRoot={lazyRoot}
-                  src={item?.thumbnail?.url}
-                  width="500"
-                  height="500" />
+                src={item?.thumbnail?.url}
+                width="500"
+                height="500"
+                placeholder="blur"
+                blurDataURL={`https://admin.dylanops.com/media/catalog/product/cache/2683b4a526d8263648e615dd2082622d/l/t/lt06.jpg`}
+              />
             </div>
           )
         })

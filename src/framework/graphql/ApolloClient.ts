@@ -6,7 +6,9 @@ import { useMemo } from "react";
 
 const cache = new InMemoryCache();
 
-const uri = "https://pim.local/graphql"
+// let uri = "https://admin.dylanops.com/graphql"
+
+const uri = process.env.MAGENTO_GRAPHQL_PUBLIC_URL
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
